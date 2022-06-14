@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Grinev\LaravelOpenSearchEngine\OpenSearchEngine;
+use Laravel\Scout\EngineManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        resolve(EngineManager::class)->extend(config('scout.driver'), function () {
+            return new OpenSearchEngine;
+        });
     }
 }

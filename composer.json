@@ -7,12 +7,15 @@
     "require": {
         "php": "^8.0.2",
         "aws/aws-sdk-php": "^3.225",
-        "elasticsearch/elasticsearch": "^8.2",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.5.4",
+        "kitar/laravel-dynamodb": "^1.0",
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.8",
+        "laravel/scout": "^9.4",
         "laravel/tinker": "^2.7",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "romangrinev/laravel-opensearch-engine": "^0.0.9",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

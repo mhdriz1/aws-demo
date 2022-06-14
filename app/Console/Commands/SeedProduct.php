@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Product;
 use Aws\Firehose\FirehoseClient;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Elastic\Elasticsearch\ClientBuilder;
 
 class SeedProduct extends Command
 {
@@ -30,7 +30,7 @@ class SeedProduct extends Command
      */
     public function handle()
     {
-        $xmlString = file_get_contents(storage_path() . "/app/xml/rss1.xml");
+        $xmlString = file_get_contents(storage_path() . "/app/xml/rss3.xml");
         $xmlObject = simplexml_load_string($xmlString, 'SimpleXMLElement', LIBXML_NOCDATA);
 
         $json = json_encode($xmlObject);
@@ -44,9 +44,11 @@ class SeedProduct extends Command
 
         $batch = [];
 
+        $insert = [];
+
         foreach($products as $product) {
 
-            $data = [
+            $raw = [
                 'product_id' => $this->clean($product['ProductID']),
                 'product_name' => $this->clean($product['Name']),
                 'product_desc' => $this->clean($product['Description']),
@@ -59,26 +61,29 @@ class SeedProduct extends Command
                 'timestamp'   => Carbon::now()->timestamp
             ];
 
-            $client = ClientBuilder::create()
-                ->setHosts([
-                    env('ELASTICSEARCH_URL', 'https://vpc-product-kb7mvtklxncsx3n4nycqzbeqfe.ap-southeast-1.es.amazonaws.com/')
-                ])
-                ->build();
-            $response = $client->info();
+            $insert[] = $raw;
 
-            echo $response['version']['number'];
+            $batch[] = [
+                'Data' => \json_encode($raw)
+            ];
 
-//            $batch[] = [
-//                'Data' => \json_encode($data) . PHP_EOL
-//            ];
-//
-//            if(count($batch) >= $maxBatch) {
-//                $this->stream($batch);
-//
-//                $batch = [];
-//            }
+            if(count($batch) >= $maxBatch) {
+                $this->stream($batch);
+
+                Product::query()
+                    ->insert($insert);
+
+                $batch = $insert = [];
+            }
 
             $bar->advance();
+        }
+
+        if(count($batch)) {
+            Product::query()
+                ->insert($insert);
+
+            $this->stream($batch);
         }
 
         $bar->finish();
@@ -97,7 +102,8 @@ class SeedProduct extends Command
         ]);
 
         $firehose->putRecordBatch([
-            'DeliveryStreamName' => env('KINESIS_DELIVERY_STREAM_NAME'),
+//            'DeliveryStreamName' => env('KINESIS_DELIVERY_STREAM_NAME'),
+            'DeliveryStreamName' => 'product-stream-parquet',
             'Records'            => $batch,
         ]);
     }

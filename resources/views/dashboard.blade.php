@@ -10,7 +10,7 @@
                               <span
                                   class="absolute inset-x-0 bottom-0 h-2  bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"
                               ></span>
-                            <h5 class="text-5xl font-bold text-indigo-400">100</h5>
+                            <h5 class="text-5xl font-bold text-indigo-400">{{ number_format($products) }}</h5>
                             <div class="pt-2 mt-4 border-t-2 border-indigo-100">
                                 <p class="text-sm font-bold tracking-widest text-gray-500">Products</p>
                             </div>
@@ -20,7 +20,7 @@
                               <span
                                   class="absolute inset-x-0 bottom-0 h-2  bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"
                               ></span>
-                            <h5 class="text-5xl font-bold text-indigo-400">100</h5>
+                            <h5 class="text-5xl font-bold text-indigo-400">{{ number_format($sellers) }}</h5>
                             <div class="pt-2 mt-4 border-t-2 border-indigo-100">
                                 <p class="text-sm font-bold tracking-widest text-gray-500">Store</p>
                             </div>
@@ -30,7 +30,7 @@
                               <span
                                   class="absolute inset-x-0 bottom-0 h-2  bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"
                               ></span>
-                            <h5 class="text-5xl font-bold text-indigo-400">100</h5>
+                            <h5 class="text-5xl font-bold text-indigo-400">0</h5>
                             <div class="pt-2 mt-4 border-t-2 border-indigo-100">
                                 <p class="text-sm font-bold tracking-widest text-gray-500">Sale</p>
                             </div>
