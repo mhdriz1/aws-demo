@@ -17,9 +17,9 @@
 
             <!-- Email Address -->
             <div>
-                <x-label for="email" value="demo@nech.zone" />
+                <x-label for="email" :value="__('Email')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" value="demo1234" required autofocus />
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" value="demo@nech.zone" required autofocus />
             </div>
 
             <!-- Password -->
@@ -29,6 +29,7 @@
                 <x-input id="password" class="block mt-1 w-full"
                                 type="password"
                                 name="password"
+                                value="demo1234"
                                 required autocomplete="current-password" />
             </div>
 
